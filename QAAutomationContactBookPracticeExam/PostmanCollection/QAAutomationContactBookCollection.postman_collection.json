@@ -1,0 +1,571 @@
+{
+	"info": {
+		"_postman_id": "411d7e91-6fe0-42cb-969a-21f7f54af0ad",
+		"name": "QAAutomationContactBookCollection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "EndpointsListing",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code 200 OK\", function(){",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"The Response is arrays of endpoints\", function() {",
+							"  pm.expect(pm.response.headers.get('Content-Type'))",
+							"    .to.eql('application/json; charset=utf-8');",
+							"  const jsonData = pm.response.json();",
+							"  pm.expect(Array.isArray(jsonData)).equals(true);",
+							"  for (let endpoint of jsonData) {",
+							"    pm.expect(typeof(endpoint)).equals(\"object\");",
+							"    pm.expect(typeof(endpoint.route)).equals(\"string\");",
+							"    pm.expect(typeof(endpoint.method)).equals(\"string\");",
+							"  }",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://contactbook.evgenidimitrov0.repl.co/api",
+					"protocol": "https",
+					"host": [
+						"contactbook",
+						"evgenidimitrov0",
+						"repl",
+						"co"
+					],
+					"path": [
+						"api"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ContactsListing",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code 200 OK\", function(){",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"The Response is arrays of contacts and the last name of the third contact is Hathaway\", function() {",
+							"  pm.expect(pm.response.headers.get('Content-Type'))",
+							"    .to.eql('application/json; charset=utf-8');",
+							"  const jsonData = pm.response.json();",
+							"  pm.expect(Array.isArray(jsonData)).equals(true);",
+							"  for (let contact of jsonData) {",
+							"    pm.expect(typeof(contact)).equals(\"object\");",
+							"    pm.expect(Number.isInteger(contact.id)).equals(true);",
+							"    pm.expect(typeof(contact.firstName)).equals(\"string\");",
+							"    pm.expect(typeof(contact.lastName)).equals(\"string\");",
+							"    pm.expect(typeof(contact.email)).equals(\"string\");",
+							"    pm.expect(typeof(contact.phone)).equals(\"string\");",
+							"    pm.expect(typeof(contact.dateCreated)).equals(\"string\");",
+							"    pm.expect(typeof(contact.comments)).equals(\"string\");",
+							"  }",
+							"  pm.expect(jsonData[2].lastName).to.eql('Hathaway');",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://contactbook.evgenidimitrov0.repl.co/api/contacts",
+					"protocol": "https",
+					"host": [
+						"contactbook",
+						"evgenidimitrov0",
+						"repl",
+						"co"
+					],
+					"path": [
+						"api",
+						"contacts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ContactByIdListing",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code 200 OK\", function(){",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Check data types for a single contact\", function() {",
+							"  pm.expect(pm.response.headers.get('Content-Type'))",
+							"    .to.eql('application/json; charset=utf-8');",
+							"    const jsonData = pm.response.json();",
+							"    pm.expect(typeof(jsonData)).equals(\"object\");",
+							"    pm.expect(Number.isInteger(jsonData.id)).equals(true);",
+							"    pm.expect(typeof(jsonData.firstName)).equals(\"string\");",
+							"    pm.expect(typeof(jsonData.lastName)).equals(\"string\");",
+							"    pm.expect(typeof(jsonData.email)).equals(\"string\");",
+							"    pm.expect(typeof(jsonData.phone)).equals(\"string\");",
+							"    pm.expect(typeof(jsonData.dateCreated)).equals(\"string\");",
+							"    pm.expect(typeof(jsonData.comments)).equals(\"string\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://contactbook.evgenidimitrov0.repl.co/api/contacts/3",
+					"protocol": "https",
+					"host": [
+						"contactbook",
+						"evgenidimitrov0",
+						"repl",
+						"co"
+					],
+					"path": [
+						"api",
+						"contacts",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "SearchByValidKeyword",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code 200 OK\", function(){",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"The Response is arrays of searched contacts and the first contact is Dimitar Berbatov\", function() {",
+							"  pm.expect(pm.response.headers.get('Content-Type'))",
+							"    .to.eql('application/json; charset=utf-8');",
+							"  const jsonData = pm.response.json();",
+							"  pm.expect(Array.isArray(jsonData)).equals(true);",
+							"  for (let contact of jsonData) {",
+							"    pm.expect(typeof(contact)).equals(\"object\");",
+							"    pm.expect(Number.isInteger(contact.id)).equals(true);",
+							"    pm.expect(typeof(contact.firstName)).equals(\"string\");",
+							"    pm.expect(typeof(contact.lastName)).equals(\"string\");",
+							"    pm.expect(typeof(contact.email)).equals(\"string\");",
+							"    pm.expect(typeof(contact.phone)).equals(\"string\");",
+							"    pm.expect(typeof(contact.dateCreated)).equals(\"string\");",
+							"    pm.expect(typeof(contact.comments)).equals(\"string\");",
+							"  }",
+							"  pm.expect(jsonData[0].firstName).to.eql('Dimitar')",
+							"  pm.expect(jsonData[0].lastName).to.eql('Berbatov');",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://contactbook.evgenidimitrov0.repl.co/api/contacts/search/dimitar",
+					"protocol": "https",
+					"host": [
+						"contactbook",
+						"evgenidimitrov0",
+						"repl",
+						"co"
+					],
+					"path": [
+						"api",
+						"contacts",
+						"search",
+						"dimitar"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "SearchByInvalidKeyword",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.environment.set(\"random\", Math.floor((Math.random() * 10000) + 1));"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code 200 OK\", function(){",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"",
+							"pm.test(\"The response is an empty array\", function() {",
+							"  pm.expect(pm.response.headers.get('Content-Type'))",
+							"    .to.eql('application/json; charset=utf-8');",
+							"  const jsonData = pm.response.json();",
+							"  pm.expect(Array.isArray(jsonData)).equals(true);",
+							"  pm.expect(jsonData.length).eql(0);  ",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://contactbook.evgenidimitrov0.repl.co/api/contacts/search/missing{{random}}",
+					"protocol": "https",
+					"host": [
+						"contactbook",
+						"evgenidimitrov0",
+						"repl",
+						"co"
+					],
+					"path": [
+						"api",
+						"contacts",
+						"search",
+						"missing{{random}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CreateNewContactWithInvalidFirstName",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code 400 Bad Request\", function(){",
+							"    pm.response.to.have.status(400);",
+							"});",
+							"",
+							"pm.test(\"Check for empty first name error message\", function(){",
+							"    const jsonData = pm.response.json();",
+							"    pm.expect(jsonData.errMsg).to.eql('First name cannot be empty!');",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"firstName\": \"\",\n    \"lastName\": \"Shelby\",\n    \"email\": \"mrthomasshelby@gmail.com\",\n    \"phone\": \"+44 79 5001 123\",\n    \"comments\": \"Thomas Shelby is the leader of the Birmingham criminal gang, the Peaky Blinders and the patriarch of the Shelby Family.\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://contactbook.evgenidimitrov0.repl.co/api/contacts",
+					"protocol": "https",
+					"host": [
+						"contactbook",
+						"evgenidimitrov0",
+						"repl",
+						"co"
+					],
+					"path": [
+						"api",
+						"contacts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CreateNewContactWithInvalidLastName",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code 400 Bad Request\", function(){",
+							"    pm.response.to.have.status(400);",
+							"});",
+							"",
+							"pm.test(\"Check for empty last name error message\", function(){",
+							"    const jsonData = pm.response.json();",
+							"    pm.expect(jsonData.errMsg).to.eql('Last name cannot be empty!');",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"firstName\": \"Thomas\",\n    \"lastName\": \"\",\n    \"email\": \"mrthomasshelby@gmail.com\",\n    \"phone\": \"+44 79 5001 123\",\n    \"comments\": \"Thomas Shelby is the leader of the Birmingham criminal gang, the Peaky Blinders and the patriarch of the Shelby Family.\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://contactbook.evgenidimitrov0.repl.co/api/contacts",
+					"protocol": "https",
+					"host": [
+						"contactbook",
+						"evgenidimitrov0",
+						"repl",
+						"co"
+					],
+					"path": [
+						"api",
+						"contacts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CreatenewContactWithInvalidEmail",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code 400 Bad Request\", function(){",
+							"    pm.response.to.have.status(400);",
+							"});",
+							"",
+							"pm.test(\"Check for empty last name error message\", function(){",
+							"    const jsonData = pm.response.json();",
+							"    pm.expect(jsonData.errMsg).to.eql('Invalid email!');",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"firstName\": \"Thomas\",\n    \"lastName\": \"Shelby\",\n    \"email\": \"tommyshelby\",\n    \"phone\": \"+44 79 5001 123\",\n    \"comments\": \"Thomas Shelby is the leader of the Birmingham criminal gang, the Peaky Blinders and the patriarch of the Shelby Family.\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://contactbook.evgenidimitrov0.repl.co/api/contacts",
+					"protocol": "https",
+					"host": [
+						"contactbook",
+						"evgenidimitrov0",
+						"repl",
+						"co"
+					],
+					"path": [
+						"api",
+						"contacts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CreateNewContactWithValidData",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code 201 Created\", function(){",
+							"    pm.response.to.have.status(201);",
+							"});",
+							"",
+							"pm.test(\"Check for created new contact success message and repsonse data types\", function(){",
+							"    const jsonData = pm.response.json();",
+							"    pm.expect(jsonData.msg).to.eql(\"Contact added.\");",
+							"    pm.expect(Number.isInteger(jsonData.contact.id)).equals(true);",
+							"    pm.expect(typeof(jsonData.contact.firstName)).equals(\"string\");",
+							"    pm.expect(typeof(jsonData.contact.lastName)).equals(\"string\");",
+							"    pm.expect(typeof(jsonData.contact.email)).equals(\"string\");",
+							"    pm.expect(typeof(jsonData.contact.phone)).equals(\"string\");",
+							"    pm.expect(typeof(jsonData.contact.dateCreated)).equals(\"string\");",
+							"    pm.expect(typeof(jsonData.contact.comments)).equals(\"string\");",
+							"    let contactId = jsonData.contact.id;",
+							"    console.log(contactId);",
+							"    pm.environment.set(\"ContactID\", contactId);",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"firstName\": \"Thomas\",\n    \"lastName\": \"Shelby\",\n    \"email\": \"mrthomasshelby@gmail.com\",\n    \"phone\": \"+44 79 5001 123\",\n    \"comments\": \"Thomas Shelby is the leader of the Birmingham criminal gang, the Peaky Blinders and the patriarch of the Shelby Family.\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://contactbook.evgenidimitrov0.repl.co/api/contacts",
+					"protocol": "https",
+					"host": [
+						"contactbook",
+						"evgenidimitrov0",
+						"repl",
+						"co"
+					],
+					"path": [
+						"api",
+						"contacts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeleteContactById",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code 200 OK\", function(){",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Check for deleted contact message\", function(){",
+							"    const jsonData = pm.response.json();",
+							"    const contactId = pm.environment.get('ContactID');",
+							"    console.log(contactId);",
+							"    pm.expect(jsonData.msg).to.eql('Contact deleted: ' +contactId);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://contactbook.evgenidimitrov0.repl.co/api/contacts/{{ContactID}}",
+					"protocol": "https",
+					"host": [
+						"contactbook",
+						"evgenidimitrov0",
+						"repl",
+						"co"
+					],
+					"path": [
+						"api",
+						"contacts",
+						"{{ContactID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CheckForNonExistentContactAfterDeletion",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code 200 OK\", function(){",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Check for non-existentent contact after the execution of delete request\", function() {",
+							"  pm.expect(pm.response.headers.get('Content-Type'))",
+							"    .to.eql('application/json; charset=utf-8');",
+							"  const jsonData = pm.response.json();",
+							"  pm.expect(Array.isArray(jsonData)).equals(true);",
+							"  const contactId = pm.environment.get('ContactID');",
+							"  console.log(contactId);",
+							"  for (let contact of jsonData) {",
+							"      pm.expect(contact.id).not.eql(contactId);",
+							"  }",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://contactbook.evgenidimitrov0.repl.co/api/contacts",
+					"protocol": "https",
+					"host": [
+						"contactbook",
+						"evgenidimitrov0",
+						"repl",
+						"co"
+					],
+					"path": [
+						"api",
+						"contacts"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
